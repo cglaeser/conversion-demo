@@ -1,0 +1,26 @@
+.converter {
+    margin: 20px auto;
+    width: 40%;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+    border: 1px solid #eee;
+    padding: 10px;
+    box-sizing: border-box;
+    
+}
+
+h4 {
+    color: #FF0000;
+}
+    
+.container {
+        background-color: white;
+        width: 970px;
+        margin: 0px auto;
+}
+    
+@media (min-width: 600px) {
+        .converter {
+            width: 500px;
+        }
+}

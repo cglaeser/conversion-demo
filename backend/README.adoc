@@ -1,0 +1,120 @@
+== Number Conversion Backend Project
+
+This is a Spring boot based Java backend intended to convert numbers from one number representation to another number representation.
+It is intended to be extended later on:
+
+At the moment, the following number styles are supported:
+
+* Decimal -> Roman
+* Binary -> Roman
+
+=== Getting started
+
+==== Running mongoDB locally with docker
+
+docker run --network host --name mongo-java-project -d mongo
+
+==== Running the application
+
+Please execute once prior to executing the application to generate a BuildInfo file:
+
+ mvn compile
+
+Main class/Entry point:
+
+ de.numerals.conversionbackend.ConversionBackendApplication
+
+=== Backend restrictions
+
+This backend currently supports only number conversions up to 3,999 (MMMCMXCIX) and only supports full numbers without fractions.
+
+=== Background information
+
+==== What is a roman numeral
+
+A roman numeral is a number represented with letters.
+
+.Roman numerals
+[width="50%",cols=">s,^m",frame="topbot",options="header"]
+|==========================
+|Symbol  | Value
+|I       | 1
+|V       | 5
+|X       | 10
+|L       | 50
+|C       | 100
+|D       | 500
+|M       | 1000
+|==========================
+
+These letters are combined in the following order:
+
+* Highest to lowest (left to right) -> additive (XI -> 11)
+* If a lower number is left of a higher number -> subtractive (IX -> 9)
+
+=== Notes from Spring boot
+
+These notes are from Spring Boot to help getting started with the Spring boot framework
+
+==== Reference Documentation Spring Boot
+
+For further reference, please consider the following sections:
+
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/maven-plugin/)
+* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#configuration-metadata-annotation-processor)
+* [Spring Web](https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
+* [Spring Data MongoDB](https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-mongodb)
+* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#using-boot-devtools)
+
+==== Guides for Spring Boot
+
+The following guides illustrate how to use some features concretely:
+
+* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
+* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+* [Accessing Data with MongoDB](https://spring.io/guides/gs/accessing-data-mongodb/)
+
+== Background:
+
+=== NumberConverter App
+
+You will be writing a web application called “NumberConverter”.
+
+=== Task 1: The App
+
+==== Frontend
+
+Should be implemented as a SinglePageApplication (SPA).
+That app should allow users to enter a number into an input field and convert it into another format.
+Your UI should allow for converting numbers (1) from decimal to roman as well as (2) from binary to roman.
+The app should include a NumberConverter component that would render a UI control to toggle between conversion modes.
+As your co-workers will need the NumberConverter component for other use cases as well, it should be written in a generic and reusable way to allow extending it with new conversion operations (e.g., hexadecimal to roman).
+You do not have to implement these other use cases; but please make sure using NumberConverter in other contexts would require minimal changes to your code.
+
+==== Backend
+
+The actual conversion should happen server-side, so there should be a Spring-based server app listening to requests from the client and implementing the conversion.
+The server should also allow for extension with minimal code modifications (on both sides).
+
+=== Task 2 (optional): Audit Log
+
+All conversions executed via the frontend should have an audit trail in the backend store.
+You can choose and implement any store you like, whether it is a flat file or a RDBMS (in-memory or persistent).
+Each audit record should include a timestamp, a type of conversion, incoming and outgoing params/results.
+
+== Coding Guidelines
+
+We are mainly interested in a way you solve this problem on a conceptual level.
+Therefore, we care more about code quality (cleanliness), separation of concerns and maintainability than about a polished UI design.
+Try applying OOP principles such as Dependency Injection thoughtfully.
+
+=== Extra credits
+
+Extra credit for tests provided (though we do not expect a 100% coverage).
+
+=== 3rd Party Libraries
+
+We want you to implement this application using Java/Spring Boot as a self-contained app (with all the dependencies baked into one jar file) with Typescript/Javascript React/Angular (whatever you're most comfortable with) frontend.
+Please do not use any external libraries to perform the conversions.

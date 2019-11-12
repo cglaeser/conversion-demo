@@ -1,0 +1,20 @@
+# base image
+FROM node:12.11.1-alpine
+
+# set working directory
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+# install and cache app dependencies
+COPY package.json /app/package.json
+RUN npm install --save
+RUN npm install react-scripts@3.2.0 -g --silent
+#RUN npm install -g create-react-app@latest
+
+# Bundle app source
+COPY . /usr/src/app
+
+# start app
+CMD ["npm", "start"]

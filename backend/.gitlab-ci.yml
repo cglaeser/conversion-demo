@@ -1,0 +1,86 @@
+image: docker:stable
+
+services:
+  - docker:dind
+
+stages:
+  # execute tests
+  - test
+  # generate pdf as a build artefact
+  - create-pdf
+  # package conversion-service as docker image
+  - package
+  # create pdf documentation for delivery
+  - documentation
+  # push the docker image to my registry
+  - push
+  # deploy the docker-compose.yml to our artifactory
+  - deploy
+  # trigger subsequent builds
+  - post-deploy
+
+variables:
+  #DOCKER_REGISTRY: "registry.securedocs.de:5005"
+  #MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  #MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+  # When using dind service we need to instruct docker, to talk with the
+  # daemon started inside of the service. The daemon is available with
+  # a network connection instead of the default /var/run/docker.sock socket.
+  #
+  # The 'docker' hostname is the alias of the service container as described at
+  # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+  # When using dind, it's wise to use the overlayfs driver for
+  # improved performance.
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  MAVEN_DIR_RELATIVE: ".m2/repository"
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+
+test:
+  stage: test
+  image: maven:latest
+  script:
+    - mvn test
+  artifacts:
+    paths:
+      - target/
+
+create-pdf:
+  stage: create-pdf
+  image: asciidoctor/docker-asciidoctor:latest
+  script:
+    - asciidoctor-pdf -v
+    - find ./ -type f -name '*.adoc' -exec asciidoctor-pdf {} \;
+  artifacts:
+    paths:
+      - ./*.pdf
+  cache:
+    paths:
+      - README.pdf
+
+package:
+  stage: package
+  image: maven:latest
+  script:
+    - mvn install
+  artifacts:
+    paths:
+      - target/
+
+
+#push:
+#  stage: push
+#  tags:
+#    - docker
+#  image: docker:dind
+#  script:
+#    - docker version
+#    - docker images
+#    - docker build -t $IMAGE_TAG .
+#    - echo "$DOCKER_REGISTRY_PASSWORD_TOKEN" | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+#    - docker push $IMAGE_TAG
+#  artifacts:
+#    paths:
+#      - target/

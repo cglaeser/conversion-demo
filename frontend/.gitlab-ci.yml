@@ -1,0 +1,36 @@
+image: node:latest
+
+stages:
+  - build
+  - test
+  - create-pdf
+
+cache:
+  paths:
+        - node_modules/    
+
+install_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+    - node_modules/
+
+testing_testing:
+  stage: test
+  script: 
+    - npm test
+    
+create-pdf:
+  stage: create-pdf
+  image: asciidoctor/docker-asciidoctor:latest
+  script:
+    - asciidoctor-pdf -v
+    - find ./ -type f -name '*.adoc' -exec asciidoctor-pdf {} \;
+  artifacts:
+    paths:
+      - ./*.pdf
+  cache:
+    paths:
+      - README.pdf

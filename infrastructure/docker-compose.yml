@@ -1,0 +1,94 @@
+version: '3.7'
+services:
+# Admin overview
+ portainer:
+    container_name: "portainer"
+    restart: "always"
+    image: portainer/portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_volume:/data #saves relatively to current folder in .portainer subfolder
+    ports:
+      - 9090:9000
+    command: -H unix:///var/run/docker.sock
+    restart: unless-stopped
+ frontend:
+    container_name: frontend
+    # image in dockerfile
+    build:
+      context: ../frontend/
+    volumes:
+      - frontend_volume:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "3001:80"
+    environment:
+      - REACT_APP_ENDPOINT=http://backend:80/
+    depends_on:
+      - "backend"
+    restart: unless-stopped
+ minio1:
+    container_name: minio1
+    image: minio/minio:RELEASE.2019-10-12T01-39-57Z
+    volumes:
+      - miniodata_volume:/data
+      - minioconfig_volume:/root/.minio
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=miniominio
+    command: server /data
+    expose:
+      - "9000"
+    #restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+ backend:
+    container_name: backend 
+    build:
+      context: ../backend/
+    environment:
+      - MINIO_HOST=minio.localhost
+      - MINIO_PORT=9000
+      # port which spring boot uses internally
+      - server.port=8081
+      - "SPRING_PROFILES_ACTIVE=production"
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_MONGODB_DATABASE=conversion-backend
+      - SPRING_DATA_MONGODB_PORT=27017
+      # port forwarding to host system
+    depends_on:
+      - minio1
+      - mongodb
+    ports:
+      - "8081:8081"
+    expose:
+      - "8081"
+    restart: unless-stopped
+ mongodb:
+    container_name: mongodb
+    image: mongo:4.2.1
+    environment:
+      MONGO_INITDB_DATABASE: conversion-backend
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    ports:
+        - "27017:27017"
+    expose:
+        - "27017"
+    command: mongod
+    volumes:
+      - mongodb_volume:/data/db
+    restart: unless-stopped
+# Volumes to persist data
+volumes:
+  mongodb_volume:
+  miniodata_volume:
+  minioconfig_volume:
+  portainer_volume:
+  #backend_volume:
+  frontend_volume:
