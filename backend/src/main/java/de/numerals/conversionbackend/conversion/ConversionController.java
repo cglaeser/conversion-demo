@@ -3,7 +3,8 @@ package de.numerals.conversionbackend.conversion;
 import de.numerals.conversionbackend.audits.AuditEvent;
 import de.numerals.conversionbackend.audits.AuditEventRepository;
 import de.numerals.conversionbackend.conversion.common.ConversionObject;
-import de.numerals.conversionbackend.conversion.common.exceptions.ClassicalRomanNumberRangeExceededException;
+import de.numerals.conversionbackend.conversion.common.exceptions.ArgumentOutOfRangeException;
+import de.numerals.conversionbackend.conversion.common.exceptions.ConverterInvalidSelection;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -27,13 +28,15 @@ public class ConversionController {
     @Autowired
     private AuditEventRepository auditEventDataRepository;
 
+    @Autowired
+    private ServiceSelector serviceSelector;
 
     /**
      * @param conversionObject The input object which shall be converted
      * @return The result as a json object and additionally, a httpStatus Code
      */
 
-    @PostMapping(path = "/toRoman")
+    @PostMapping(path = "/convert")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Conversion was successful"),
             @ApiResponse(code = 416, message = "Conversion outside of range of roman numbers"),
@@ -42,18 +45,21 @@ public class ConversionController {
     ResponseEntity<ConversionResultDTO> convertValueToRomanNumeral(@RequestBody ConversionObject conversionObject) {
         ConversionResultDTO conversionResult = new ConversionResultDTO();
         conversionResult.setInputValue(conversionObject.getValue());
-        conversionResult.setConversion(conversionObject.getConverter());
+        conversionResult.setConversion(conversionObject.getMethod());
         HttpStatus httpStatus;
         try {
-            String romanValue = conversionObject.getConverter().getConverterInstance().convertToRomanNumeral(conversionObject.getValue());
-            conversionResult.setRomanNumeral(romanValue);
+            String romanValue = serviceSelector.getConverter(conversionObject.getMethod()).setRadix(conversionObject.getRadix()).convert(conversionObject.getValue());
+            conversionResult.setResult(romanValue);
             httpStatus = HttpStatus.OK;
-        } catch (ClassicalRomanNumberRangeExceededException ex) {
-            conversionResult.setErrorMessage("Number is larger or smaller than a roman numeral allows");
+        } catch (ArgumentOutOfRangeException ex) {
+            conversionResult.setErrorMessage("The passed number is not valid");
             httpStatus = HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE;
         } catch (NumberFormatException ex) {
-            conversionResult.setErrorMessage("The number is not valid for a conversion with the requested method: " + conversionObject.getConverter());
+            conversionResult.setErrorMessage("The number is not valid for a conversion with the requested method: " + conversionObject.getMethod());
             httpStatus = HttpStatus.BAD_REQUEST;
+        } catch (ConverterInvalidSelection converterInvalidSelection) {
+            conversionResult.setErrorMessage("Your selected converted is invalid: " + conversionObject.getMethod());
+            httpStatus = HttpStatus.EXPECTATION_FAILED;
         }
         saveAuditEvent(httpStatus, conversionResult);
         return new ResponseEntity<>(conversionResult, httpStatus);

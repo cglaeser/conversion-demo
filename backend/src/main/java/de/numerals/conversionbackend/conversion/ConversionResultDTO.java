@@ -16,8 +16,8 @@ public class ConversionResultDTO {
     /**
      * The roman numeral
      */
-    @ApiModelProperty(position = 2, notes = "The roman numeral to which the input value has been converted - may be null in case of an error")
-    String romanNumeral;
+    @ApiModelProperty(position = 2, notes = "The numeral to which the input value has been converted - may be null in case of an error")
+    String result;
 
     /**
      * The conversion executed
@@ -40,12 +40,12 @@ public class ConversionResultDTO {
         this.inputValue = inputValue;
     }
 
-    public String getRomanNumeral() {
-        return romanNumeral;
+    public String getResult() {
+        return result;
     }
 
-    public void setRomanNumeral(String romanNumeral) {
-        this.romanNumeral = romanNumeral;
+    public void setResult(String result) {
+        this.result = result;
     }
 
     public ConverterEnum getConversion() {
@@ -69,7 +69,7 @@ public class ConversionResultDTO {
     public String toString() {
         return "ConversionResultDTO{" +
                 "inputValue='" + inputValue + '\'' +
-                ", romanNumeral='" + romanNumeral + '\'' +
+                ", romanNumeral='" + result + '\'' +
                 ", conversion=" + conversion +
                 ", errorMessage='" + errorMessage + '\'' +
                 '}';

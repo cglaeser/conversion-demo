@@ -10,16 +10,19 @@ import io.swagger.annotations.ApiModelProperty;
 @Api
 public class ConversionObject {
     @ApiModelProperty(position = 1, notes = "The conversion method to be applied to the input", required = true)
-    ConverterEnum converter;
+    ConverterEnum method;
     @ApiModelProperty(position = 2, example = "\"1000\"", allowableValues = "1-3999 (decimal)", notes = "All numbers without fractions between a decimal value of 1 to 3,999", required = true)
     String value;
 
-    public ConverterEnum getConverter() {
-        return converter;
+    @ApiModelProperty(position = 3, example = "2", allowableValues = "a radix, e.g. 2 (binary) or 10(decimal)")
+    Integer radix;
+
+    public ConverterEnum getMethod() {
+        return method;
     }
 
-    public void setConverter(ConverterEnum converter) {
-        this.converter = converter;
+    public void setMethod(ConverterEnum method) {
+        this.method = method;
     }
 
     public String getValue() {
@@ -28,5 +31,14 @@ public class ConversionObject {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+
+    public Integer getRadix() {
+        return radix;
+    }
+
+    public void setRadix(Integer radix) {
+        this.radix = radix;
     }
 }

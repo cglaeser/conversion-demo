@@ -1,6 +1,6 @@
 package de.numerals.conversionbackend.conversion.converters.instances;
 
-import de.numerals.conversionbackend.conversion.common.exceptions.ClassicalRomanNumberRangeExceededException;
+import de.numerals.conversionbackend.conversion.common.exceptions.ArgumentOutOfRangeException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,24 +41,24 @@ class HexadecimalToRomanNumeralsTest {
     }
 
     @Test
-    void longestRomanNumber() throws ClassicalRomanNumberRangeExceededException {
+    void longestRomanNumber() throws ArgumentOutOfRangeException {
         //number 1888
         String inputValue = "760";
         String resultValue = "MDCCCLXXXVIII";
-        assertEquals(hexadecimalToRomanNumeral.convertToRomanNumeral(inputValue), resultValue);
+        assertEquals(hexadecimalToRomanNumeral.convert(inputValue), resultValue);
     }
 
     //Exception lets test fail
     @Test
-    void convertToRomanNumeralSimple() throws ClassicalRomanNumberRangeExceededException {
+    void convertToRomanNumeralSimple() throws ArgumentOutOfRangeException {
         String inputValue = "1";
-        assertEquals("I", hexadecimalToRomanNumeral.convertToRomanNumeral(inputValue));
+        assertEquals("I", hexadecimalToRomanNumeral.convert(inputValue));
     }
 
     //Exception lets test fail
     @Test
-    void convertToRomanNumeralComplex() throws ClassicalRomanNumberRangeExceededException {
+    void convertToRomanNumeralComplex() throws ArgumentOutOfRangeException {
         String inputValue = "F9F";
-        assertEquals("MMMCMXCIX", hexadecimalToRomanNumeral.convertToRomanNumeral(inputValue));
+        assertEquals("MMMCMXCIX", hexadecimalToRomanNumeral.convert(inputValue));
     }
 }

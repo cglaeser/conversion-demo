@@ -1,6 +1,6 @@
 package de.numerals.conversionbackend.conversion.converters.instances;
 
-import de.numerals.conversionbackend.conversion.common.exceptions.ClassicalRomanNumberRangeExceededException;
+import de.numerals.conversionbackend.conversion.common.exceptions.ArgumentOutOfRangeException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,23 +39,23 @@ class DecimalToRomanNumeralsTest {
     }
 
     @Test
-    void longestRomanNumber() throws ClassicalRomanNumberRangeExceededException {
+    void longestRomanNumber() throws ArgumentOutOfRangeException {
         String inputValue = "1888";
         String resultValue = "MDCCCLXXXVIII";
-        assertEquals(decimalToRomanNumerals.convertToRomanNumeral(inputValue), resultValue);
+        assertEquals(decimalToRomanNumerals.convert(inputValue), resultValue);
     }
 
     //Exception lets test fail
     @Test
-    void convertToRomanNumeralSimple() throws ClassicalRomanNumberRangeExceededException {
+    void convertToRomanNumeralSimple() throws ArgumentOutOfRangeException {
         String inputValue = "1";
-        assertEquals("I", decimalToRomanNumerals.convertToRomanNumeral(inputValue));
+        assertEquals("I", decimalToRomanNumerals.convert(inputValue));
     }
 
     //Exception lets test fail
     @Test
-    void convertToRomanNumeralComplex() throws ClassicalRomanNumberRangeExceededException {
+    void convertToRomanNumeralComplex() throws ArgumentOutOfRangeException {
         String inputValue = "3999";
-        assertEquals("MMMCMXCIX", decimalToRomanNumerals.convertToRomanNumeral(inputValue));
+        assertEquals("MMMCMXCIX", decimalToRomanNumerals.convert(inputValue));
     }
 }

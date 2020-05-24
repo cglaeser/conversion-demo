@@ -1,6 +1,6 @@
 package de.numerals.conversionbackend.conversion.common;
 
-import de.numerals.conversionbackend.conversion.common.exceptions.ClassicalRomanNumberRangeExceededException;
+import de.numerals.conversionbackend.conversion.common.exceptions.ArgumentOutOfRangeException;
 
 public class ConverterMethods {
 
@@ -8,7 +8,7 @@ public class ConverterMethods {
     private ConverterMethods() {
     }
 
-    public static String convertToRomanNumeral(int value) throws ClassicalRomanNumberRangeExceededException {
+    public static String convertToRomanNumeral(int value) throws ArgumentOutOfRangeException {
         checkBounds(value);
         StringBuilder sb = new StringBuilder();
         while (value >= 1000) {
@@ -67,9 +67,9 @@ public class ConverterMethods {
         return sb.toString();
     }
 
-    public static boolean checkBounds(Integer value) throws ClassicalRomanNumberRangeExceededException {
-        if (value < 1) throw new ClassicalRomanNumberRangeExceededException("Number smaller than 1");
-        if (value > 3999) throw new ClassicalRomanNumberRangeExceededException("Number larger than 3,999");
+    public static boolean checkBounds(Integer value) throws ArgumentOutOfRangeException {
+        if (value < 1) throw new ArgumentOutOfRangeException("Number smaller than 1");
+        if (value > 3999) throw new ArgumentOutOfRangeException("Number larger than 3,999");
         return true;
     }
 

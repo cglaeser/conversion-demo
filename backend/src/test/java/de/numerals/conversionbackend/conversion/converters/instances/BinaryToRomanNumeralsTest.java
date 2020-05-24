@@ -1,6 +1,6 @@
 package de.numerals.conversionbackend.conversion.converters.instances;
 
-import de.numerals.conversionbackend.conversion.common.exceptions.ClassicalRomanNumberRangeExceededException;
+import de.numerals.conversionbackend.conversion.common.exceptions.ArgumentOutOfRangeException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,24 +41,24 @@ class BinaryToRomanNumeralsTest {
     }
 
     @Test
-    void longestRomanNumber() throws ClassicalRomanNumberRangeExceededException {
+    void longestRomanNumber() throws ArgumentOutOfRangeException {
         //number 1888
         String inputValue = "011101100000";
         String resultValue = "MDCCCLXXXVIII";
-        assertEquals(binaryToRomanNumerals.convertToRomanNumeral(inputValue), resultValue);
+        assertEquals(binaryToRomanNumerals.convert(inputValue), resultValue);
     }
 
     //Exception lets test fail
     @Test
-    void convertToRomanNumeralSimple() throws ClassicalRomanNumberRangeExceededException {
+    void convertToRomanNumeralSimple() throws ArgumentOutOfRangeException {
         String inputValue = "1";
-        assertEquals("I", binaryToRomanNumerals.convertToRomanNumeral(inputValue));
+        assertEquals("I", binaryToRomanNumerals.convert(inputValue));
     }
 
     //Exception lets test fail
     @Test
-    void convertToRomanNumeralComplex() throws ClassicalRomanNumberRangeExceededException {
+    void convertToRomanNumeralComplex() throws ArgumentOutOfRangeException {
         String inputValue = "111110011111";
-        assertEquals("MMMCMXCIX", binaryToRomanNumerals.convertToRomanNumeral(inputValue));
+        assertEquals("MMMCMXCIX", binaryToRomanNumerals.convert(inputValue));
     }
 }
