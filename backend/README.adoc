@@ -5,8 +5,8 @@ It is intended to be extended later on:
 
 At the moment, the following number styles are supported:
 
-* Decimal -> Roman
-* Binary -> Roman
+* Any number format -> Roman
+* Roman -> Any number format
 
 === Getting started
 
@@ -80,7 +80,7 @@ The following guides illustrate how to use some features concretely:
 
 === NumberConverter App
 
-You will be writing a web application called “NumberConverter”.
+Web application called “NumberConverter”.
 
 === Task 1: The App
 
