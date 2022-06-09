@@ -3,6 +3,7 @@
     "configMode": "AUTO",
     "configExternalURL": "",
     "projectToken": "",
+    "enableIaC": "true",
     "baseBranches": []
   },
   "checkRunSettings": {
@@ -14,6 +15,8 @@
     "issueType": "DEPENDENCY"
   },
   "remediateSettings": {
+  "enableRenovate": true,
+    "extends": ["github>whitesource/merge-confidence:beta"]
     "workflowRules": {
       "enabled": true
     }
