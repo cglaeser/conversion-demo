@@ -2,4 +2,4 @@
 
 See the asciidoc files in the backend and frontend folder for more information
 
-Now includes security scans
+Now includes security scan
