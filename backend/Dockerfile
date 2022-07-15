@@ -4,7 +4,7 @@ COPY . .
 RUN mvn package -DskipTests
 
 
-FROM openjdk:11.0.5-jdk AS jar-executor
+FROM openjdk:11.0.15-jdk AS jar-executor
 MAINTAINER Christian Glaeser <glaeser@7says.de>
 VOLUME /tmp
 COPY --from=build /target/conversion-backend.jar conversion-backend.jar
