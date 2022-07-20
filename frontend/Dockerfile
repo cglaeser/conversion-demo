@@ -1,5 +1,5 @@
 # build environment
-FROM node:12.2.0-alpine as build
+FROM node:18.6.0-alpine as build
 # set working directory
 # this is the working folder in the container
 # from which the app will be running from
