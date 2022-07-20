@@ -71,7 +71,7 @@ services:
     restart: unless-stopped
  mongodb:
     container_name: mongodb
-    image: mongo:4.4.15
+    image: mongo:5.0.9
     environment:
       MONGO_INITDB_DATABASE: conversion-backend
       MONGODB_DATA_DIR: /data/db
