@@ -1,5 +1,5 @@
 # build
-FROM maven:3.6.2-jdk-11 AS build
+FROM maven:3.8.6-jdk-11 AS build
 COPY . .
 RUN mvn package -DskipTests
 
