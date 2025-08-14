@@ -15,7 +15,7 @@ COPY . /app
 RUN npm run build
 
 # production environment
-FROM nginx:1.17.5-alpine
+FROM nginx:1.29.1-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 # if you are using react router 
 # you need to overwrite the default nginx configurations
